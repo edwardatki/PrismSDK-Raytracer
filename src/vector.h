@@ -27,12 +27,28 @@ Vector scale (Vector a, double k) {
 }
 
 Vector normalize (Vector a) {
-    double k = magnitude(a);
-    Vector output = {.x = 0, .y = 0, .z = 0};
-    if (k != 0) scale(output, 1.0/k);
-    return output;
+    double k = abs(magnitude(a));
+    if (k == 0) {
+        Vector output = {.x = 0, .y = 0, .z = 0};
+        return output;
+    } else {
+        Vector output = {.x = a.x/k, .y = a.x/k, .z = a.z/k};
+        return output;
+    }
 }
 
 double dot (Vector a, Vector b) {
     return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
+}
+
+Ray reflect (Vector incident, Vector intersect, Vector normal) {
+    incident = normalize(incident);
+    normal = normalize(normal);
+
+    Vector reflected = subtract(incident, scale(normal, 2.0*dot(normal, incident)));
+    Vector origin = add(intersect, scale(reflected, 0.001));
+
+    Ray out = {.origin = origin, .direction = normalize(reflected)};
+
+    return out;
 }

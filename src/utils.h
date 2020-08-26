@@ -80,3 +80,15 @@ color_t scaleColor (color_t color, double k) {
     b *= k;
     return setColor(r, g, b);
 }
+
+color_t addColor(color_t a, color_t b) {
+    unsigned char ar, ag, ab;
+    unsigned char br, bg, bb;
+    unsigned char or, og, ob;
+    getColor(a, &ar, &ag, &ab);
+    getColor(a, &br, &bg, &bb);
+    or = min(max(ar + br, 0), 255);
+    og = min(max(ag + bg, 0), 255);
+    ob = min(max(ab + bb, 0), 255);
+    return setColor(or, og, ob);
+}

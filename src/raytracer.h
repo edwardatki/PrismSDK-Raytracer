@@ -35,11 +35,14 @@ color_t traceRay (Ray ray) {
     Vector normal = sphereNormal(closest, intersectPos);
     //if (dot(normalize(ray.direction), normal) < 0) normal = scale(normal, -1);
     
-    // eg - diffuse = dot(normalize(subtract(light, intersectPos)), normal)
-    Vector lightDir = normalize(subtract(light, intersectPos));
-    double kd = dot(lightDir, normal);
+    //Vector lightDir = normalize(subtract(light, intersectPos));
+    Vector lightDir = normalize(scale(light, -1.0));
 
-    //return closest->color;
-    //return scaleColor(closest->color, max(min(kd, 1.0), 0.1));
-    return scaleColor(closest->color, max(min(1-((double)distance/(double)200), 1.0), 0.1));
+    double kd = dot(lightDir, normal);
+    //double ks = dot(lightDir, reflect(ray.direction, intersectPos, normal).direction);
+    //ks = pow(ks, 4);
+
+    //return addColor(scaleColor(closest->color, max(min(kd, 1.0), 0.1)), scaleColor(COLOR_WHITE, ks));
+    return scaleColor(closest->color, max(min(kd, 1.0), 0.1));
+    //return scaleColor(closest->color, max(min(1-((double)distance/(double)200), 1.0), 0.1));
 }
